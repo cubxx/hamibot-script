@@ -1,0 +1,1 @@
+hamibot-types: https://github.com/batu1579/hamibot-types

@@ -1,0 +1,19 @@
+[
+  {
+    "label": "免费时长",
+    "help": "单位: h",
+    "type": "range",
+    "max": "24",
+    "show-value": true,
+    "name": "freetimes"
+  },
+  {
+    "label": "页面检查间隔",
+    "help": "单位: ms",
+    "type": "range",
+    "max": "1000",
+    "step": "10",
+    "show-value": true,
+    "name": "checkInterval"
+  }
+]
