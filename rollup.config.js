@@ -1,9 +1,9 @@
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import tsConfigPaths from 'rollup-plugin-tsconfig-paths';
-import dotenv from 'dotenv';
+import 'dotenv/config';
+import { sync } from './scripts/plugin.js';
 
-dotenv.config();
 const name = process.env.SCRIPT_NAME;
 const signature = `// Cubx https://github.com/Cubxx/hamibot-script ${new Date().toLocaleString()}`;
 /**
@@ -15,7 +15,7 @@ export default {
   output: {
     dir: 'dist',
     entryFileNames: `${name}.js`,
-    intro: `${signature}\n(function(){'use strict';`,
+    intro: `${signature}\n(function(){\n'use strict';`,
     outro: `})();`,
     sourcemap: false,
   },
@@ -23,5 +23,5 @@ export default {
     propertyReadSideEffects: false,
     unknownGlobalSideEffects: false,
   },
-  plugins: [tsConfigPaths(), resolve(), typescript()],
+  plugins: [tsConfigPaths(), resolve(), typescript(), sync()],
 };

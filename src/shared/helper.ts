@@ -1,3 +1,5 @@
+import type { TimeoutID } from 'timers';
+
 const alias_map = {
   '#': 'id',
   '.': 'className',
@@ -26,6 +28,7 @@ export function $(
     el,
     click() {
       if (!el) return `${selector} not found`;
+      sleep(random(500, 1000));
       if (!el.click()) {
         const bounds = el.bounds();
         click(bounds.centerX() + 1, bounds.centerY());
@@ -37,20 +40,17 @@ export function $(
 export type Page = {
   name: string;
   is: () => UiObject | null | boolean;
-  do: () => string | undefined;
+  do: () => string | void;
 };
 export function check(pages: Page[], notFound: () => void) {
-  for (let i = pages.length; i > 0; i--) {
-    const page = pages[i - 1];
+  for (const page of pages) {
     if (page.is()) {
       log(`page is ${page.name}`);
       const err = page.do();
       if (err) log(`page ${page.name} error: ${err}`);
       return;
-    } else {
     }
   }
-  log('page no found');
   notFound?.();
 }
 export function loop(fn: () => void, ms: number) {
@@ -58,4 +58,18 @@ export function loop(fn: () => void, ms: number) {
     fn();
     setTimeout(loop, ms);
   })();
+}
+
+export function throttle(fn: () => void, ms: number) {
+  let timer: null | TimeoutID = null;
+  return () => {
+    if (timer !== null) {
+      clearTimeout(timer);
+      return;
+    }
+    timer = setTimeout(() => {
+      fn();
+      timer = null;
+    }, ms);
+  };
 }

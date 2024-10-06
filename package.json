@@ -2,13 +2,14 @@
   "type": "module",
   "scripts": {
     "dev": "rollup -c -w",
-    "build": "rollup -c && node scripts/upload.js"
+    "build": "rollup -c"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-typescript": "^12.1.0",
     "dotenv": "^16.4.5",
     "hamibot-types": "https://github.com/batu1579/hamibot-types.git",
+    "puppeteer-core": "^23.4.1",
     "rollup": "^4.22.4",
     "rollup-plugin-tsconfig-paths": "^1.5.2",
     "tslib": "^2.7.0",

@@ -12,7 +12,8 @@
     "verbatimModuleSyntax": true,
     "paths": {
       "~/*": ["./src/shared/*"]
-    }
+    },
+    "types": ["hamibot-types"]
   },
-  "include": ["node_modules/hamibot-types/types", "src", "types"]
+  "include": ["src", "types"]
 }
