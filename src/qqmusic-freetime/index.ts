@@ -8,47 +8,41 @@ const freetimeEndStr = `${freetimes.split('').join(' ')} 小时`;
 const pages: Page[] = [
   {
     name: '免费模式',
-    is: () => $('=?免费模式剩余时长').el,
+    is: () => $('t?免费模式剩余时长').el,
     do() {
-      const freetimeText = $('=?免费模式剩余时长', 0).el?.text() ?? '';
+      const freetimeText = $('t?免费模式剩余时长', 0).el?.text() ?? '';
       //         t(freetimeText);
       if (freetimeText.includes(freetimeEndStr)) {
         log(`已获取 ${freetimeEndStr}, 即将退出`);
         sleep(3e3);
         throw 0;
       }
-      if (!$('=去浏览').click()) {
+      if (!$('t=去浏览').click()) {
         sleep(11e3);
         back();
       }
-      $('=去完成').click();
-      $('=领取奖励').click();
-      return $('=续时长').click() && $('=去开启').click();
+      // $('t=去完成').click();
+      $('t=领取奖励').click();
+      $('t?我知道了').click();
+      return $('t=续时长').click() && $('t=去开启').click();
     },
   },
   {
     name: '广告',
-    is: () => $('=?免费听歌').el,
+    is: () => $('t?免费听歌').el,
     do() {
-      let err;
-      for (let i = 20; i > 0; i--) {
-        if ($('=^已获得免费听歌').el)
-          return $('=关闭').click() && $('=?跳过').click();
-        err =
-          $('=点击一下，获得奖励').click() &&
-          $('=立即点击').click() &&
-          $('=^只需点一下').click();
-        if (!err) {
-          sleep(1e3);
-          currentPackage() === pkgName && back();
-        }
-      }
-      return err;
+      if ($('t^已获得免费听歌').el)
+        return (
+          $('t=关闭').click() && $('t?跳过').click() && $('d=关闭广告').click()
+        );
+      $('t=点击一下，获得奖励').click() &&
+        $('t^只需点一下').click() &&
+        $('t=立即点击').click();
     },
   },
   {
     name: '充值',
-    is: () => $('=?确认协议').el,
+    is: () => $('t?确认协议').el,
     do: () => (back() ? void 0 : 'back error'),
   },
 ];
@@ -64,10 +58,9 @@ app.startActivity({
 loop(
   () =>
     check(pages, () => {
-      if (currentPackage() !== pkgName) {
-        log('goto ' + pkgName);
-        app.launchPackage(pkgName);
-      }
+      if (currentPackage() === pkgName) return;
+      log('goto ' + pkgName);
+      app.launchPackage(pkgName);
     }),
   +checkInterval,
 );

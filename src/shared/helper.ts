@@ -1,27 +1,29 @@
 import type { TimeoutID } from 'timers';
 
-const alias_map = {
+const type_map = {
   '#': 'id',
   '.': 'className',
-  '=': 'text',
-  '+': 'desc',
-};
-const alias2_map = {
+  t: 'text',
+  d: 'desc',
+} as const;
+const mode_map = {
+  '=': '',
   '?': 'Contains',
   '^': 'StartsWith',
   $: 'EndsWith',
-};
-const alias2 = new Set(Object.keys(alias2_map));
-export function $(
-  selector: `${keyof typeof alias_map}${'' | keyof typeof alias2_map}${string}`,
-  ms = 1,
-) {
-  const [selectFn, content] = alias2.has(selector[1])
-    ? [alias_map[selector[0]] + alias2_map[selector[1]], selector.slice(2)]
-    : [alias_map[selector[0]], selector.slice(1)];
-  if (!selectFn) log(`invalid selector ${selector}`);
-  /** @type {UiSelector} */
-  const ui = globalThis[selectFn](content);
+  ':': 'Matches',
+} as const;
+export function $<
+  T extends keyof typeof type_map,
+  U extends keyof typeof mode_map,
+  V = `${(typeof type_map)[T]}${(typeof mode_map)[U]}`,
+>(selector: `${T}${U}${string}`, ms = 1) {
+  const type = selector[0],
+    mode = selector[1],
+    content = selector.slice(2);
+  const selectFn = globalThis[type_map[type] + mode_map[mode]];
+  if (typeof selectFn !== 'function') log(`invalid selector ${selector}`);
+  const ui: UiSelector = selectFn(content);
   const el = ui.findOne(ms);
   return {
     ui,
@@ -53,13 +55,13 @@ export function check(pages: Page[], notFound: () => void) {
   }
   notFound?.();
 }
+
 export function loop(fn: () => void, ms: number) {
   (function loop() {
     fn();
     setTimeout(loop, ms);
   })();
 }
-
 export function throttle(fn: () => void, ms: number) {
   let timer: null | TimeoutID = null;
   return () => {
