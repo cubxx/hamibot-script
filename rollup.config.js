@@ -2,19 +2,19 @@ import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import tsConfigPaths from 'rollup-plugin-tsconfig-paths';
 import 'dotenv/config';
-import { sync } from './scripts/plugin.js';
+import { sync } from './plugins/sync.js';
 
-const name = process.env.SCRIPT_NAME;
-const signature = `// Cubx https://github.com/Cubxx/hamibot-script ${new Date().toLocaleString()}`;
+const { SCRIPT_NAME } = process.env;
+const signature = `// Cubx https://github.com/cubxx/hamibot-script ${new Date().toLocaleString()}`;
 /**
  * @type {import('rollup').RollupOptions}
  * @link https://www.rollupjs.com/configuration-options
  */
 export default {
-  input: `src/${name}/index.ts`,
+  input: `src/${SCRIPT_NAME}.ts`,
   output: {
     dir: 'dist',
-    entryFileNames: `${name}.js`,
+    entryFileNames: `${SCRIPT_NAME}.js`,
     intro: `${signature}\n(function(){\n'use strict';`,
     outro: `})();`,
     sourcemap: false,

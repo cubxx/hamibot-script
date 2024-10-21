@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { ElementHandle, launch } from 'puppeteer-core';
 import { scripts } from './json.js';
 
-const { TOKEN, SCRIPT_NAME } = process.env;
+const { TOKEN } = process.env;
 const browser = await launch({
   executablePath:
     'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
@@ -33,7 +33,7 @@ page.setCookie(
  * @param {Promise<ElementHandle<T>[]>} handles
  * @param {(handle: ElementHandle<T>) => Promise<boolean>} cb
  */
-export async function filter(handles, cb) {
+export async function choose(handles, cb) {
   for (const handle of await handles) if (await cb(handle)) return handle;
   throw null;
 }
@@ -59,13 +59,13 @@ export const goto = Object.assign(
       if (id) return goto('dashboard/scripts/edit/' + id);
       await goto.console();
       await page.waitForSelector('table');
-      const row = await filter(page.$$('tbody > tr'), (el) =>
+      const row = await choose(page.$$('tbody > tr'), (el) =>
         el
           .$eval('td', (el) => el.innerText)
           .then((text) => text.includes(name)),
       ).catch(() => goto.create(name));
       if (!row) return goto.editor(name);
-      const btn = await filter(row.$$('button'), (el) =>
+      const btn = await choose(row.$$('button'), (el) =>
         el.evaluate((el) => el.innerText.includes('源码')),
       ).catch(() => {
         throw 'Edit button not found';
