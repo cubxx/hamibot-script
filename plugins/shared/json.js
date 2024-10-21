@@ -10,4 +10,4 @@ async function json(path) {
     },
   });
 }
-export const scripts = json('scripts.json');
+export const scripts = await json('scripts.json');

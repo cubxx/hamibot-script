@@ -75,3 +75,11 @@ export function throttle(fn: () => void, ms: number) {
     }, ms);
   };
 }
+
+export function toSearchParams(obj: Record<string, unknown>) {
+  return Object.entries(obj)
+    .map(
+      ([key, value]) => `${key}=${encodeURIComponent(JSON.stringify(value))}`,
+    )
+    .join('&');
+}
