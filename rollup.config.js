@@ -4,17 +4,17 @@ import tsConfigPaths from 'rollup-plugin-tsconfig-paths';
 import 'dotenv/config';
 import { sync } from './plugins/sync.js';
 
-const { SCRIPT_NAME } = process.env;
+const { script_name } = process.env;
 const signature = `// Cubx https://github.com/cubxx/hamibot-script ${new Date().toLocaleString()}`;
 /**
  * @type {import('rollup').RollupOptions}
  * @link https://www.rollupjs.com/configuration-options
  */
 export default {
-  input: `src/${SCRIPT_NAME}.ts`,
+  input: `src/${script_name}.ts`,
   output: {
     dir: 'dist',
-    entryFileNames: `${SCRIPT_NAME}.js`,
+    entryFileNames: `${script_name}.js`,
     intro: `${signature}\n(function(){\n'use strict';`,
     outro: `})();`,
     sourcemap: false,
@@ -23,5 +23,5 @@ export default {
     propertyReadSideEffects: false,
     unknownGlobalSideEffects: false,
   },
-  plugins: [tsConfigPaths(), resolve(), typescript(), sync()],
+  plugins: [tsConfigPaths(), resolve(), typescript({ target: 'es5' }), sync()],
 };

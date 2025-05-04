@@ -10,7 +10,7 @@ function debounce(fn, ms) {
   };
 }
 async function cv(text) {
-  (await page.$('div.CodeMirror-scroll')).evaluate((el) =>
+  (await page.$('div.CodeMirror-scroll'))?.evaluate((el) =>
     el.dispatchEvent(new MouseEvent('mousedown')),
   );
   const cmd = spawn('clip');
@@ -35,7 +35,7 @@ async function focusFile(filename) {
 }
 async function update(name, code, config) {
   await goto.editor(name);
-  (await page.waitForSelector('input[type="checkbox"]')).evaluate(
+  (await page.waitForSelector('input[type="checkbox"]'))?.evaluate(
     (el) => el.checked || el.click(),
   );
   if (config) {
@@ -54,7 +54,7 @@ export function sync(debounce_ms = 3e3) {
     transform(code, id) {
       return code.replace(/defineConfig\(([^\)]+)\)/, (_, g1) => {
         configs[id] = JSON.stringify(new Function('return ' + g1)(), null, 2);
-        return '';
+        return 'hamibot.env';
       });
     },
     generateBundle(options, bundle) {

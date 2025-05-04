@@ -2,10 +2,8 @@ import 'dotenv/config';
 import { ElementHandle, launch } from 'puppeteer-core';
 import { scripts } from './json.js';
 
-const { TOKEN } = process.env;
 const browser = await launch({
-  executablePath:
-    'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
+  executablePath: process.env.browser,
   headless: false,
   args: ['--window-size=800,800', `--window-position=${1920 - 800},60`],
 });
@@ -18,7 +16,7 @@ page.setCookie(
   },
   {
     name: 'auth._token.local',
-    value: 'Bearer ' + TOKEN,
+    value: 'Bearer ' + process.env.token,
     domain: 'hamibot.com',
   },
   {

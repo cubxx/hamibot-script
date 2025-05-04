@@ -8,6 +8,7 @@
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-typescript": "^12.1.0",
     "dotenv": "^16.4.5",
+    "fs-extra": "^11.3.0",
     "hamibot-types": "https://github.com/batu1579/hamibot-types.git",
     "puppeteer-core": "^23.4.1",
     "rollup": "^4.22.4",
