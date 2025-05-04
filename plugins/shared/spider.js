@@ -1,12 +1,6 @@
 import 'dotenv/config';
 
-const {
-  API_KEY: key,
-  TOKEN: token,
-  SCRIPT_NAME: name,
-  SCRIPT_ID: script_id,
-  DEVICE_ID: device_id,
-} = process.env;
+const { token, script_id } = process.env;
 
 const hostname = 'hamibot.com';
 const host = `https://${hostname}`;
@@ -61,9 +55,9 @@ function push(code, file) {
 const ws = new WebSocket(
   'wss://hamibot.cn/socket.io/?' +
     new URLSearchParams({
-      token: token,
-      version: 3,
-      EIO: 3,
+      token,
+      version: '' + 3,
+      EIO: '' + 3,
       transport: 'websocket',
     }),
 )

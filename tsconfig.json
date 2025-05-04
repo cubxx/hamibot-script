@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["ESNext"],
-    "target": "ES5",
+    "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "strict": true,
@@ -10,10 +10,10 @@
     "removeComments": true,
     "noImplicitAny": false,
     "verbatimModuleSyntax": true,
+    "checkJs": true,
     "paths": {
       "~/*": ["./src/shared/*"]
     },
-    "types": ["hamibot-types"]
-  },
-  "include": ["src", "types"]
+    "types": ["node", "hamibot-types"]
+  }
 }
